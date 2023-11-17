@@ -1,26 +1,25 @@
 import React, { useState } from 'react'
 
 function Login({onLogin}) {
-const [email, setEmail] = useState('');
-const [password, setPassword]= useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword]= useState('');
 
-function handleEmail(e) {
-    setEmail(e.target.value);
-};
+    function handleEmail(e) {
+        setEmail(e.target.value);
+    };
 
-function handlePassword(e) {
-    setPassword(e.target.value)
-};
+    function handlePassword(e) {
+        setPassword(e.target.value)
+    };
 
-function handleSubmit(e) {
-    // Запрещаем браузеру переходить по адресу формы
-    e.preventDefault();
-    // Передаём значения управляемых компонентов во внешний обработчик
-    onLogin({
-        email, password
-    }); 
-}
-console.log('Login component is being rendered');
+    function handleSubmit(e) {
+        // Запрещаем браузеру переходить по адресу формы
+        e.preventDefault();
+        // Передаём значения управляемых компонентов во внешний обработчик
+        onLogin({
+            email, password
+        }); 
+    }
 
 	return(
         <div className='reglog'>

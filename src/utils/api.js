@@ -41,8 +41,8 @@ export default class Api {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: name,
-                about: about,
+                name, 
+                about,
             })
         })
         .then(this._checkResponse)
@@ -60,7 +60,7 @@ export default class Api {
                 avatar: avatar
             })
         })
-    .then(this._checkResponse)
+        .then(this._checkResponse)
     }
 
     //отправляем новую карточку на сервер
@@ -102,11 +102,10 @@ export default class Api {
     }
 }
 
-
 // вызов Api
 const api = new Api ({
     baseUrl: "https://mesto.nomoreparties.co/v1/cohort-72",
     token: "f0a7d939-ec7a-4869-a9eb-1d96ec39a9dd"
-  });
+});
 
-  export {api};
+export {api};

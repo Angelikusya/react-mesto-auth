@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 
 function Register({onRegister}) {
-const [email, setEmail] = useState('');
-const [password, setPassword]= useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword]= useState('');
 
 	function handleEmail(e) {
 		setEmail(e.target.value);

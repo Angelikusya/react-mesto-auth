@@ -3,14 +3,14 @@ import React, { useState } from 'react'
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser, renderLoading}) {
-// Подписка на контекст
-const currentUser = React.useContext(CurrentUserContext);
-const [name, setName] = useState('');
-const [description, setDescription]= useState('');
+function EditProfilePopup({ isOpen, onClose, onUpdateUser}) {
+    // Подписка на контекст
+    const currentUser = React.useContext(CurrentUserContext);
+    const [name, setName] = useState('');
+    const [description, setDescription]= useState('');
 
-// После загрузки текущего пользователя из API
-// его данные будут использованы в управляемых компонентах.
+    // После загрузки текущего пользователя из API
+    // его данные будут использованы в управляемых компонентах.
     React.useEffect(() => {
         setName(currentUser.name);
         setDescription(currentUser.about);
@@ -42,7 +42,6 @@ const [description, setDescription]= useState('');
             isOpen={isOpen}
             onClose={onClose}
             onSubmit={handleSubmit}
-            renderLoading={renderLoading}
         >
         <input
             id="name-input"

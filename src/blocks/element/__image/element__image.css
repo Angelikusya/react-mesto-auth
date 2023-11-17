@@ -6,4 +6,5 @@
     aspect-ratio: 1 / 1;
     display: block;
     cursor: pointer;
+    background-size: cover;
 }

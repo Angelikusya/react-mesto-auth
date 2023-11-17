@@ -28,7 +28,7 @@ function App() {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
-  const [isSuccessfulyRegistrate, setIsSuccessfulyRegistrate] = useState(false);
+  const [isSuccessfulRegistration, setIsSuccessfulRegistration] = useState(false);
   const [email, setEmail] = useState('');
 
   useEffect(() => {
@@ -89,7 +89,7 @@ function App() {
       .catch((err) => console.error(`Ошибка: ${err}`))
   };
 
-  function handleAddplace(data) {
+  function handleAddPlace(data) {
     api.addCard(data.name, data.link)
         .then((newCard) => {
           setCards([newCard, ...cards]);
@@ -109,16 +109,17 @@ function App() {
   function handleRegister({email, password}) {
     auth 
     .register(email, password)
-    .then((res) => {
-      setIsSuccessfulyRegistrate(true);
-      setIsInfoTooltipOpen(true);
+    .then(() => {
+      setIsSuccessfulRegistration(true);
       navigate('/signin');
     })
     .catch((err) => {
       console.error(`Ошибка: ${err}`);       
-        setIsInfoTooltipOpen(true);
-        setIsSuccessfulyRegistrate(false);
+      setIsSuccessfulRegistration(false);
     })
+    .finally(() => {
+      setIsInfoTooltipOpen(true);
+    });
   }
 
   function handleExit() {
@@ -133,6 +134,7 @@ function App() {
     .then((res) => {
       if(res.token) {
         setLoggedIn(true);
+        setEmail(email);
         navigate('/');
         localStorage.setItem('token', res.token);
         return res;
@@ -170,38 +172,51 @@ function App() {
   }
   return (
     <div className="page">
-    <CurrentUserContext.Provider value={currentUser}>
-      <Header email={email} onExit={handleExit}/>
-      <Routes>
-        <Route path="/signin" element={<Login onLogin={handleLogin} />} />
-        <Route path="/signup" element={<Register onRegister={handleRegister}/>} />
-        <Route 
-              path="/" 
-              element={ <ProtectedRoute 
-              element={Main}
-              onEditProfile={handleEditProfileClick}         
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              onCardClick={handleCardClick}
-              cards={cards}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-              loggedIn={loggedIn}  />}
-          />
-        <Route path="*" element={loggedIn ? <Navigate to="/" /> : <Navigate to="/signin" />} />
-      </Routes>
+      <CurrentUserContext.Provider value={currentUser}>
+        <Header email={email} onExit={handleExit}/>
+        <Routes>
+          <Route path="/signin" element={<Login onLogin={handleLogin} />} />
+          <Route path="/signup" element={<Register onRegister={handleRegister}/>} />
+          <Route 
+            path="/" 
+            element={ 
+              <ProtectedRoute 
+                element={Main}
+                onEditProfile={handleEditProfileClick}         
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                cards={cards}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+                loggedIn={loggedIn}  
+                />
+              }
+            />
+          <Route path="*" element={loggedIn ? <Navigate to="/" /> : <Navigate to="/signin" />} />
+        </Routes>
 
-        {loggedIn && <Footer />}
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}  onUpdateAvatar={handleUpdateAvatar}/> 
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddplace}/>
-        {selectedCard && (
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-        )}
-        <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} 
-          allert={isSuccessfulyRegistrate ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
-          image={isSuccessfulyRegistrate ? ImgSuccess : ImgFail}/>
-      </CurrentUserContext.Provider>
+          {loggedIn && <Footer />}
+          <EditProfilePopup isOpen={isEditProfilePopupOpen} 
+                            onClose={closeAllPopups} 
+                            onUpdateUser={handleUpdateUser}
+          />
+          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} 
+                          onClose={closeAllPopups}  
+                          onUpdateAvatar={handleUpdateAvatar}
+          /> 
+          <AddPlacePopup isOpen={isAddPlacePopupOpen} 
+                        onClose={closeAllPopups} 
+                        onAddPlace={handleAddPlace}
+          />
+          {selectedCard && (
+            <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          )}
+          <InfoTooltip isOpen={isInfoTooltipOpen} 
+                      onClose={closeAllPopups} 
+                      alert={isSuccessfulRegistration ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
+                      image={isSuccessfulRegistration ? ImgSuccess : ImgFail}/>
+        </CurrentUserContext.Provider>
     </div>
   );
 }

@@ -16,25 +16,26 @@ function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
             avatar: avatarRef.current.value,
         }); 
     }
-return (
-    <PopupWithForm
-        title="Обновить аватар"
-        name="edit-avatar"
-        submitButton="Сохранить"
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={handleSubmit}
-        >
-        <input
-        id="popup-edit-avatar"
-        type="url"
-        className="popup__input popup__input_type_link"
-        name="avatar"
-        placeholder="Ссылка на картинку"
-        required
-        ref={avatarRef || ''}
-        />
-    </PopupWithForm>
+    
+    return (
+        <PopupWithForm
+            title="Обновить аватар"
+            name="edit-avatar"
+            submitButton="Сохранить"
+            isOpen={isOpen}
+            onClose={onClose}
+            onSubmit={handleSubmit}
+            >
+            <input
+            id="popup-edit-avatar"
+            type="url"
+            className="popup__input popup__input_type_link"
+            name="avatar"
+            placeholder="Ссылка на картинку"
+            required
+            ref={avatarRef || ''}
+            />
+        </PopupWithForm>
     )
 };
 
